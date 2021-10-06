@@ -43,10 +43,10 @@ const notifyCustomer = async () => {
       console.log(email)
     }
     else {
-      console.log(`${customer.name} is not a gold customer`)
+      console.log(`${customer.name} is not a gold customer, no email sent...`)
     }
   } catch (error) {
-    
+    console.log(`Error: ${error.message}`)
   }
 }
 notifyCustomer()
