@@ -1,40 +1,47 @@
-// // The delema
-// const getUser = (id, callback) => {
-//   setTimeout(() => {
-//     console.log('reading a user from a database.....')
-//     return { id: id, gitHubUsername: 'JarvisF8' }
-//   }, 2000)
-// }
+// The delema - Retrieving data from a remote/Asycncronous source
+const getUser = (id) => { // Promise & Async/Await Version
+// const getUser = (id, callback) => { // Callback Version
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('Reading a user from a database...')
+      // callback({ id: id, gitHubUsername: 'JarvisF8' }) // Callback Response
+      resolve({ id: id, gitHubUsername: 'JarvisF8' }) // Promise & Async/Await Response
+      reject(new Error('They set us up the bomb')) // Promise & Async/Await Response
+    }, 2000);
+  })
+}
 
-// console.log('Before')
-// const user = getUser(1)
+const getRepositories = (username) => { // Promise & Async/Await Version
+// const getRepositories = (username, callback) => { // Callback Version
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('Calling GitHub API...')
+      // callback(['repo1', 'repo2', 'repo3']) // Callback Response
+      resolve(['repo1', 'repo2', 'repo3']) // Promise & Async/Await Response
+      reject(new Error('All your base are belong to us')) // Promise & Async/Await Response
+    }, 2000)
+  })
+}
+
+const getCommits = (repo) => { // Promise & Async/Await Version
+// const getCommits = (repo, callback) => { // Callback Version
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('Calling GitHub API...')
+      // callback(['commit']) // Callback Response
+      resolve(['commit']) // Promise & Async/Await Response
+      reject(new Error('The cake is a lie')) // Promise & Async/Await Response
+    }, 2000)
+  })
+}
+
+console.log('Before')
+// const user = getUser(1) 
 // console.log(user)
-// console.log('After')
 
 
 // // callbacks 
 // // (Callback Hell)
-// const getUser = (id, callback) => {
-//   setTimeout(() => {
-//     console.log('Reading a user from a database...')
-//     callback({ id: id, gitHubUsername: 'JarvisF8' })
-//   }, 2000);
-// }
-
-// const getRepositories = (username, callback) => {
-//   setTimeout(() => {
-//     console.log('Calling GitHub API...')
-//     callback(['repo1', 'repo2', 'repo3'])
-//   }, 2000)
-// }
-
-// const getCommits = (repo, callback) => {
-//   setTimeout(() => {
-//     console.log('Calling GitHub API...')
-//     callback(['commit'])
-//   }, 2000)
-// }
-
 // console.log('Before')
 // getUser(1, (user) => {
 //   getRepositories(user.gitHubUsername, (repos) => {
@@ -43,24 +50,8 @@
 //     })
 //   })
 // })
-// console.log('After')
 
 // // Restructured Callbacks
-// const getUser = (id, callback) => {
-//   setTimeout(() => {
-//     console.log('Reading a user from a database...')
-//     callback({ id: id, gitHubUsername: 'JarvisF8' })
-//     return { id: id, gitHubUsername: 'JarvisF8' }
-//   }, 2000)
-// }
-// const getRepositories = (username, callback) => {
-//   setTimeout(() => {
-//     console.log('Calling Github API...')
-//     callback(['repo1', 'repo2', 'repo3'])
-//     return ['repo1', 'repo2', 'repo3']
-//   }, 2000)
-// }
-
 // const displayCommits = (commits) => {
 //   console.log(commits)
 // }
@@ -73,49 +64,31 @@
 //   getRepos(user, getCommits)
 // }
 
-// console.log('Before')
 // getUser(1, getRepos)
-// console.log('After')
+
+
+// // promises
+// getUser(1)
+//   .then(user => getRepositories(user.gitHubUsername))
+//   .then(repos => getCommits([0]))
+//   .then(commits => console.log(commits))
+//   .catch(err => console.log(`Error: ${err.message}`))
 
 
 
-//promises
-const getUser = (id) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log('Reading a user from a database...')
-      resolve({ id: id, gitHubUsername: 'JarvisF8' })
-    }, 2000)
-    reject(new Error('They have set us up the bomb'))
-  })
+// // Async & Await
+const displayCommits = async () => {
+  try {
+    const user = await getUser(1)
+    const repos = await getRepositories(user)
+    const commits = await getCommits(repos)
+    console.log(commits)
+  }
+  catch (err) {
+    console.log(`Error: ${err}`)
+  }
 }
 
-const getRepositories = (username) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log('Calling GitHub API...')
-      resolve(['repo1', 'repo2', 'repo3'])
-    }, 2000)
-    reject(new Error('All your base are belong to us'))
-  })
-}
+displayCommits()
 
-const getCommits = (repo) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      console.log('Calling GitHub API...')
-      resolve(['commit'])
-    }, 2000)
-    reject(new Error('The cake is a lie'))
-  })
-}
-
-console.log('Before')
-getUser(1)
-  .then(user => getRepositories(user.gitHubUsername))
-  .then(repos => getCommits([0]))
-  .then(commits => console.log(commits))
-  .catch(err => console.log(`Error: ${err.message}`))
 console.log('After')
-
-// Async/await
